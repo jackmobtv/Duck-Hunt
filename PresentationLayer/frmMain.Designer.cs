@@ -101,9 +101,9 @@
             // 
             // scoreDisplay
             // 
-            scoreDisplay.Font = new Font("Ringbearer", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            scoreDisplay.Font = new Font("Comic Sans MS", 9F, FontStyle.Bold, GraphicsUnit.Point);
             scoreDisplay.Name = "scoreDisplay";
-            scoreDisplay.Size = new Size(65, 22);
+            scoreDisplay.Size = new Size(57, 22);
             scoreDisplay.Text = "Score: 0";
             // 
             // frmMain

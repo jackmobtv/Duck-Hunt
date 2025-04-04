@@ -5,12 +5,11 @@ namespace LogicLayer
     public class AssetMovement
     {
         // instantiates the Direction class
-        private static readonly Direction _dir = new Direction();
 
         // sets the horizontal location of the duck at the start of a cycle
         public static int StartDuckPos()
         {
-            int Pos = _dir.RandomClass.Next(100, 400);
+            int Pos = Direction.random.Next(100, 400);
             return Pos;
         }
         // get new directions for the ducks
@@ -18,8 +17,8 @@ namespace LogicLayer
         {
             int HDir;
 
-            int randomNumberH = _dir.RandomClass.Next(0, _dir.Horizontal.Length);
-            HDir = _dir.Horizontal[randomNumberH];
+            int randomNumberH = Direction.random.Next(0, Direction.HorizontalDirections.Length);
+            HDir = Direction.HorizontalDirections[randomNumberH];
 
             return HDir;
         }
@@ -28,8 +27,8 @@ namespace LogicLayer
         {
             int VDir;
 
-            int randomNumberV = _dir.RandomClass.Next(0, _dir.Vertical.Length);
-            VDir = _dir.Vertical[randomNumberV];
+            int randomNumberV = Direction.random.Next(0, Direction.VerticalDirections.Length);
+            VDir = Direction.VerticalDirections[randomNumberV];
 
             return VDir;
         }

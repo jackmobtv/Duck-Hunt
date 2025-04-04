@@ -17,16 +17,8 @@ namespace PresentationLayer
         private SoundPlayer fall;
         private SoundPlayer laugh;
         private bool Miss = true;
-        private String anim1;
-        private String anim2;
-        private bool d1Hit = false;
-        private bool d2Hit = false;
-        private int duck1H;
-        private int duck2H;
-        private int duck1V;
-        private int duck2V;
-        private bool fall1 = false;
-        private bool fall2 = false;
+        private Duck _duck1 = new Duck();
+        private Duck _duck2 = new Duck();
         private int score = 0;
 
         public frmMain()
@@ -59,7 +51,7 @@ namespace PresentationLayer
             while (true)
             {
                 await Task.Delay(30);
-                if (!fall1 && !fall2)
+                if (!_duck1.Fall && !_duck2.Fall)
                 {
                     break;
                 }
@@ -75,8 +67,8 @@ namespace PresentationLayer
         // moves the ducks
         private async void DuckMove()
         {
-            d1Hit = false;
-            d2Hit = false;
+            _duck1.Hit = false;
+            _duck2.Hit = false;
             int last = 1;
             int num = 1;
             Miss = true;
@@ -84,34 +76,34 @@ namespace PresentationLayer
             duck2.Left = AssetMovement.StartDuckPos();
             for (int o = 0; o < 3; o++)
             {
-                if (!d1Hit)
+                if (!_duck1.Hit)
                 {
-                    duck1H = AssetMovement.GetNewHDirection();
-                    duck1V = AssetMovement.GetNewVDirection();
-                    anim1 = AssetMovement.GetAnimationDuck(duck1H, duck1V);
-                    duck1.Image = (Image)_rm.GetObject(anim1 + "1");
+                    _duck1.dirX = AssetMovement.GetNewHDirection();
+                    _duck1.dirY = AssetMovement.GetNewVDirection();
+                    _duck1.Animation = AssetMovement.GetAnimationDuck(_duck1.dirX, _duck1.dirY);
+                    duck1.Image = (Image)_rm.GetObject(_duck1.Animation + "1");
                 }
-                if (!d2Hit)
+                if (!_duck2.Hit)
                 {
-                    duck2H = AssetMovement.GetNewHDirection();
-                    duck2V = AssetMovement.GetNewVDirection();
-                    anim2 = AssetMovement.GetAnimationDuck(duck2H, duck2V);
-                    duck2.Image = (Image)_rm.GetObject(anim2 + "1");
+                    _duck2.dirX = AssetMovement.GetNewHDirection();
+                    _duck2.dirY = AssetMovement.GetNewVDirection();
+                    _duck2.Animation = AssetMovement.GetAnimationDuck(_duck2.dirX, _duck2.dirY);
+                    duck2.Image = (Image)_rm.GetObject(_duck2.Animation + "1");
                 }
 
 
                 for (int i = 0; i < 36; i++)
                 {
                     await Task.Delay(30);
-                    if (!d1Hit)
+                    if (!_duck1.Hit)
                     {
-                        duck1.Left += duck1H;
-                        duck1.Top -= duck1V;
+                        duck1.Left += _duck1.dirX;
+                        duck1.Top -= _duck1.dirY;
                     }
-                    if (!d2Hit)
+                    if (!_duck2.Hit)
                     {
-                        duck2.Left += duck2H;
-                        duck2.Top -= duck2V;
+                        duck2.Left += _duck2.dirX;
+                        duck2.Top -= _duck2.dirY;
                     }
 
                     if ((i % 3) == 0)
@@ -139,13 +131,13 @@ namespace PresentationLayer
                         }
 
                     }
-                    if (!d1Hit)
+                    if (!_duck1.Hit)
                     {
-                        duck1.Image = (Image)_rm.GetObject(anim1 + num);
+                        duck1.Image = (Image)_rm.GetObject(_duck1.Animation + num);
                     }
-                    if (!d2Hit)
+                    if (!_duck2.Hit)
                     {
-                        duck2.Image = (Image)_rm.GetObject(anim2 + num);
+                        duck2.Image = (Image)_rm.GetObject(_duck2.Animation + num);
                     }
 
 
@@ -192,12 +184,12 @@ namespace PresentationLayer
             Miss = false;
             if (duck == 1)
             {
-                if (!d1Hit)
+                if (!_duck1.Hit)
                 {
                     score++;
                     scoreDisplay.Text = "Score: " + score;
-                    fall1 = true;
-                    d1Hit = true;
+                    _duck1.Fall = true;
+                    _duck1.Hit = true;
                     if (PlaySounds)
                     {
                         shot.Play();
@@ -209,7 +201,7 @@ namespace PresentationLayer
             }
             else if (duck == 2)
             {
-                if (!d2Hit)
+                if (!_duck2.Hit)
                 {
                     if (score != int.MaxValue)
                     {
@@ -220,8 +212,8 @@ namespace PresentationLayer
                         Win();
                     }
                     scoreDisplay.Text = "Score: " + score;
-                    fall2 = true;
-                    d2Hit = true;
+                    _duck2.Fall = true;
+                    _duck2.Hit = true;
                     if (PlaySounds)
                     {
                         shot.Play();
@@ -248,7 +240,7 @@ namespace PresentationLayer
                     await Task.Delay(30);
                     duck1.Top += 4;
                 }
-                fall1 = false;
+                _duck1.Fall = false;
             }
             else if (duck == 2)
             {
@@ -262,7 +254,7 @@ namespace PresentationLayer
                     await Task.Delay(30);
                     duck2.Top += 4;
                 }
-                fall2 = false;
+                _duck2.Fall = false;
             }
         }
 
